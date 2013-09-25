@@ -1,6 +1,7 @@
 package common.bladefury.us;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,9 +15,11 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
 
 public class SimpleHttpClient {
@@ -59,6 +62,7 @@ public class SimpleHttpClient {
 
 		// Prepare a request object
 		HttpGet httpget = new HttpGet(url);
+		httpget.setHeader(HTTP.USER_AGENT, "Mozilla/5.0 (Windows NT 5.2; rv:2.0.1) Gecko/20100101 Firefox/4.0.1");
 		
 		String result = null;
 
@@ -138,5 +142,43 @@ public class SimpleHttpClient {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public static boolean download(String url, String filename, Context context) {
+		HttpClient httpclient = new DefaultHttpClient();
+		final HttpParams http_params = httpclient.getParams();
+		HttpConnectionParams.setConnectionTimeout(http_params, URL_CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(http_params, URL_CONNECTION_READ_TIMEOUT);
+
+		// Prepare a request object
+		HttpGet httpget = new HttpGet(url); 
+
+		// Execute the request
+		HttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			// Get hold of the response entity
+			HttpEntity entity = response.getEntity();
+			// If the response does not enclose an entity, there is no need
+			// to worry about connection release
+
+			if (entity != null) {
+				// A Simple JSON Response Read
+				InputStream instream = entity.getContent();
+				FileOutputStream ofile = context.openFileOutput(filename, 0);
+				byte[] buffer = new byte[10240];
+				int len;
+				while ((len = instream.read(buffer)) != -1) {
+				    ofile.write(buffer, 0, len);
+				}
+				instream.close();
+				ofile.close();
+				return true;
+			}
+
+			
+		} catch (Exception e) {
+		}
+		return false;
 	}
 }

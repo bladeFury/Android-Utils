@@ -1,4 +1,4 @@
-package com.bladefury.us;
+package common.bladefury.us;
 
 import android.util.Log;
 

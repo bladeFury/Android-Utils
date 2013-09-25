@@ -1,4 +1,4 @@
-package com.bladefury.us;
+package common.bladefury.us;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

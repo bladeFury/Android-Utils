@@ -1,9 +1,9 @@
-package com.bladefury.us;
+package common.bladefury.us;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.bladefury.us.ShellUtils.CommandResult;
+import common.bladefury.us.ShellUtils.CommandResult;
 
 
 public class FileSystemUtils {

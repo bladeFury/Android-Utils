@@ -1,4 +1,4 @@
-package com.bladefury.us;
+package common.bladefury.us;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

@@ -1,4 +1,4 @@
-package com.bladefury.us;
+package common.bladefury.us;
 
 import java.io.File;
 
@@ -10,8 +10,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.util.Log;
 
-import com.bladefury.us.ShellUtils;
-import com.bladefury.us.ShellUtils.CommandResult;
+import common.bladefury.us.ShellUtils;
+import common.bladefury.us.ShellUtils.CommandResult;
 
 /**
  * PackageUtils

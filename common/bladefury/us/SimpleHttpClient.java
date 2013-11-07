@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -63,6 +64,48 @@ public class SimpleHttpClient {
 		// Prepare a request object
 		HttpGet httpget = new HttpGet(url);
 		httpget.setHeader(HTTP.USER_AGENT, "Mozilla/5.0 (Windows NT 5.2; rv:2.0.1) Gecko/20100101 Firefox/4.0.1");
+		
+		String result = null;
+
+		// Execute the request
+		HttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			// Examine the response status
+			Log.i("Praeda",response.getStatusLine().toString());
+
+			// Get hold of the response entity
+			HttpEntity entity = response.getEntity();
+			// If the response does not enclose an entity, there is no need
+			// to worry about connection release
+
+			if (entity != null) {
+
+				// A Simple JSON Response Read
+				InputStream instream = entity.getContent();
+				result= convertStreamToString(instream);
+				// Closing the input stream will trigger connection release
+				instream.close();
+			}
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static String get(String url, Header[] headers)
+	{
+		HttpClient httpclient = new DefaultHttpClient();
+		final HttpParams http_params = httpclient.getParams();
+		HttpConnectionParams.setConnectionTimeout(http_params, URL_CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(http_params, URL_CONNECTION_READ_TIMEOUT);
+
+		// Prepare a request object
+		HttpGet httpget = new HttpGet(url);
+		httpget.setHeader(HTTP.USER_AGENT, "Mozilla/5.0 (Windows NT 5.2; rv:2.0.1) Gecko/20100101 Firefox/4.0.1");
+		httpget.setHeaders(headers);
 		
 		String result = null;
 
